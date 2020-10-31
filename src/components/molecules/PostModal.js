@@ -4,11 +4,12 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import TextInput from "../atoms/TextInput";
+import { TextInput } from "../atoms";
+import RatingBox from "../atoms/RatingBox";
 
 const PostModal = (props) => {
   const [description, setDescription] = useState("");
-  const [email, setEmail] = useState("");
+  const [rating, setRating] = useState(0);
   const [name, setName] = useState("");
 
   // Functions triggered by inputting text value
@@ -19,11 +20,11 @@ const PostModal = (props) => {
     [setDescription]
   );
 
-  const inputEmail = useCallback(
+  const inputRating = useCallback(
     (event) => {
-      setEmail(event.target.value);
+      setRating(event.target.value);
     },
-    [setEmail]
+    [setRating]
   );
 
   const inputName = useCallback(
@@ -43,9 +44,8 @@ const PostModal = (props) => {
     return isBlank;
   };
 
-  // Slackに問い合わせがあったことを通知する
   const submitForm = () => {
-    const isBlank = validateRequiredInput(name, email, description);
+    const isBlank = validateRequiredInput(name, rating, description);
 
     if (isBlank) {
       alert("必須入力欄が空白です。");
@@ -56,27 +56,21 @@ const PostModal = (props) => {
   };
 
   return (
-    <Dialog open={props.open} onClose={props.handleOpen}>
-      <DialogTitle>講義情報を投稿する</DialogTitle>
+    <Dialog open={props.open} onClose={props.handleOpen} fullWidth>
+      <DialogTitle>講義情報を投稿しよう！</DialogTitle>
       <DialogContent>
         <TextInput
-          label={"名前(必須)"}
+          label={"講義名"}
           multiline={false}
           rows={1}
           value={name}
           type={"text"}
           onChange={inputName}
         />
+        <RatingBox item="単位" inputRating={inputRating} value={rating} />
+        <RatingBox item="内容" inputRating={inputRating} value={rating} />
         <TextInput
-          label={"メールアドレス(必須)"}
-          multiline={false}
-          rows={1}
-          value={email}
-          type={"email"}
-          onChange={inputEmail}
-        />
-        <TextInput
-          label={"お問い合わせ内容(必須)"}
+          label={"講義を受けての感想を赤裸々に！"}
           multiline={true}
           rows={5}
           value={description}

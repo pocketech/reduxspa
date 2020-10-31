@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSignedIn } from '../../store/userSlice'
+import { getSignedIn } from '../../store/userSlice';
+import { useHistory } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Hidden from '@material-ui/core/Hidden';
@@ -47,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     fontFamily: 'Grandstander, cursive',
     letterSpacing: "3px",
+    cursor: "pointer"
 
   },
   offset: theme.mixins.toolbar,
@@ -82,13 +84,14 @@ const useStyles = makeStyles((theme) => ({
       width: drawerWidth,
       flexShrink: 0,
     },
-  }
+  },
 }));
 
 export default function Header(props) {
   const { window } = props;
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
   const isLogin = useSelector(getSignedIn);
   const [mobileOpen, setMobileOpen] = useState(false);
   const handleDrawerToggle = () => {
@@ -101,41 +104,41 @@ export default function Header(props) {
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        <ListItem button >
+        <ListItem button onClick={() => history.push('/')}>
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
-          <ListItemText primary={"HOME"} />
+          <ListItemText primary={"Home"} />
         </ListItem>
-        <ListItem button >
+        <ListItem button onClick={() => history.push('/user/mypage')}>
           <ListItemIcon>
             <AccountCircleIcon />
           </ListItemIcon>
-          <ListItemText primary={"マイページ"} />
+          <ListItemText primary={"MyPage"} />
         </ListItem>
       </List>
       <Divider />
       <List>
-        <ListItem button >
+        <ListItem button onClick={() => history.push('/about')}>
           <ListItemIcon>
             <ContactIcon />
           </ListItemIcon>
-          <ListItemText primary={"お問い合わせ"} />
+          <ListItemText primary={"About"} />
         </ListItem>
-        <ListItem button >
+        <ListItem button onClick={() => history.push('/settings')}>
           <ListItemIcon>
             <SettingIcon />
           </ListItemIcon>
-          <ListItemText primary={"設定"} />
+          <ListItemText primary={"Settings"} />
         </ListItem>
       </List>
       <Divider />
       <List>
-        <ListItem button >
+        <ListItem button onClick={() => history.push('/login')}>
           <ListItemIcon>
             <LogoutIcon />
           </ListItemIcon>
-          <ListItemText primary={"ログアウト"} />
+          <ListItemText primary={"Logout"} />
         </ListItem>
       </List>
     </div>
@@ -155,24 +158,24 @@ export default function Header(props) {
           >
             <MenuIcon classes={{ root: classes.menuIcon }} />
           </IconButton>
-          <Typography variant="h4" component="h1" className={classes.title}>
+          <Typography variant="h4" component="h1" className={classes.title} onClick={() => { history.push('/') }}>
             Corgy
             <NikikyuIcon classes={{ root: classes.nikukyuIcon }} />
           </Typography>
-          <Button color="inherit" variant="outlined" className={classes.signInButton}>
-            {isLogin ? "ログアウト" : "ログイン"}
+          <Button color="inherit" variant="outlined" className={classes.signInButton} onClick={() => { history.push('/login') }}>
+            Login
           </Button>
           <ButtonGroup
-            variant="contained"
+            variant="outlined"
             edge="end"
-            color="secondary"
+            color="inherit"
             size="large"
             className={classes.navButton}
             aria-label="text primary button group"
           >
-            <Button>One</Button>
-            <Button>Two</Button>
-            <Button>Three</Button>
+            <Button onClick={() => history.push('/')}>Home</Button>
+            <Button onClick={() => history.push('/user/mypage')}>MyPage</Button>
+            <Button onClick={() => history.push('/about')}>About</Button>
           </ButtonGroup>
         </Toolbar>
       </AppBar>

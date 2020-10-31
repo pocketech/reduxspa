@@ -5,6 +5,7 @@ import Fab from "@material-ui/core/Fab";
 import EditIcon from "@material-ui/icons/Edit";
 import { makeStyles } from "@material-ui/core/styles";
 import PostModal from "../molecules/PostModal";
+import Spacer from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -20,7 +21,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Component = (props) => (
   <>
+    <Spacer my={4} />
     <Search />
+    <Spacer my={4} />
     <CardList />
     <PostModal open={props.isModalOpen} handleOpen={props.handleOpen} />
     <Fab

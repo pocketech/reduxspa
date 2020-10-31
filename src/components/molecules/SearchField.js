@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -7,7 +7,6 @@ import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
 import Search from "@material-ui/icons/Search";
 import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
 
 const faculties = [
   "政治経済学部",
@@ -39,29 +38,55 @@ semesters.map((item, index) => (
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120
+    minWidth: 120,
   },
   selectEmpty: {
     marginTop: theme.spacing(2)
+  },
+  dropdownStyle: {
+    maxHeight: 300,
+  },
+
+  container: {
+    [theme.breakpoints.up('sm')]: {
+      display: "flex",
+      justifyContent: "space-between",
+    },
+  },
+  selectwrap: {
+    width: "300px",
+    display: "flex",
+    [theme.breakpoints.down('xs')]: {
+      margin: "0 auto",
+    }
+  },
+  search: {
+    [theme.breakpoints.down('xs')]: {
+      margin: "0 auto",
+      width: 300,
+      marginTop: 20
+    }
   }
+
 }));
 
 export default function SimpleSelect() {
   const classes = useStyles();
-  const [faculty, setFaculty] = React.useState("～学部");
-  const [semester, setSemester] = React.useState("～学期");
+  const [faculty, setFaculty] = useState(`${faculties[0]}`);
+  const [semester, setSemester] = useState(`${semesters[0]}`);
 
   const handleFacultyChange = (event) => setFaculty(event.target.value);
   const handleSemesterChange = (event) => setSemester(event.target.value);
   return (
-    <Grid container>
-      <Grid item sm={12} md={6}>
+    <div className={classes.container}>
+      <div className={classes.selectwrap}>
         <FormControl className={classes.formControl}>
           <InputLabel id="demo-simple-select-label">学部</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={faculty}
+            MenuProps={{ classes: { paper: classes.dropdownStyle } }}
             onChange={handleFacultyChange}
           >
             {faculties.map((item, index) => (
@@ -88,15 +113,15 @@ export default function SimpleSelect() {
             ))}
           </Select>
         </FormControl>
-      </Grid>
-      <Grid item sm={12} md={6}>
-        <Button variant="contained" color="primary">
+      </div>
+      <div className={classes.search}>
+        <Button variant="contained" color="primary" endIcon={<Search />} >
           <Typography variant="h6">
-            {semester}の{faculty}の講義を検索する
+            <span style={{ textDecoration: "none" }}>{faculty}</span>の<span style={{ textDecoration: "none" }}>{semester}</span>の講義を検索する
           </Typography>
-          <Search />
         </Button>
-      </Grid>
-    </Grid>
+      </div>
+    </div>
+
   );
 }

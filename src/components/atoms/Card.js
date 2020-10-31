@@ -17,7 +17,7 @@ import Rating from "@material-ui/lab/Rating";
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
-    margin: "0,auto"
+    alignSelf: "center"
   },
   avatar: {
     backgroundColor: red[500]
@@ -28,6 +28,10 @@ const useStyles = makeStyles((theme) => ({
   ratingbox: {
     display: "flex",
     justifyContent: "space-between"
+  },
+  flex: {
+    display: "flex",
+    justifyContent: "space-around"
   }
 }));
 
@@ -68,7 +72,7 @@ export default function RecipeReviewCard() {
           出席が厳しく、５分でも遅れると欠席扱いとなる。講師が現役の医師であるため、医療に興味がある人にとっては面白いのかもしれない。
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
+      <CardActions disableSpacing className={classes.flex}>
         <IconButton
           aria-label="add to favorites"
           onClick={() => toggleLiked()}

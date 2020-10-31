@@ -15,11 +15,15 @@ function App() {
         <LayoutBox height="100vh">
           <Header />
           <Switch>
-            <Route exact path='(/)?' component={Home} />
-            {/* <Route exact path='/wasemeshi' component={Counter} /> */}
             <Route exact path='/login' component={SignIn} />
+            <Route exact path='/login/reset' component={Reset} />
             <Route exact path='/signup' component={SignUp} />
-            <Route exact path='/reset' component={Reset} />
+
+            <Route exact path='(/)?' component={Home} />
+            {/* <Route exact path='/about' component={About} /> */}
+            {/* <Route exact path='/user/mypage' component={Mypage} /> */}
+            {/* <Route exact path='/user/favorite' component={Favorites} /> */}
+            {/* <Route exact path='/user/coupon' component={Coupon} /> */}
           </Switch>
           <Footer />
         </LayoutBox>
