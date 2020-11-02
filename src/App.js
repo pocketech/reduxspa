@@ -5,7 +5,8 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import LayoutBox from '@material-ui/core/Container';
 import { Home, SignIn, SignUp, Reset } from './components/pages';
-import { Header, Footer } from './components/organisms'
+import { Header, Footer } from './components/organisms';
+import Auth from './Auth';
 
 function App() {
   return (
@@ -18,12 +19,13 @@ function App() {
             <Route exact path='/login' component={SignIn} />
             <Route exact path='/login/reset' component={Reset} />
             <Route exact path='/signup' component={SignUp} />
-
-            <Route exact path='(/)?' component={Home} />
-            {/* <Route exact path='/about' component={About} /> */}
-            {/* <Route exact path='/user/mypage' component={Mypage} /> */}
-            {/* <Route exact path='/user/favorite' component={Favorites} /> */}
-            {/* <Route exact path='/user/coupon' component={Coupon} /> */}
+            <Auth>
+              <Route exact path='(/)?' component={Home} />
+              {/* <Route exact path='/about' component={About} /> */}
+              {/* <Route exact path='/user/mypage' component={Mypage} /> */}
+              {/* <Route exact path='/user/favorite' component={Favorites} /> */}
+              {/* <Route exact path='/user/coupon' component={Coupon} /> */}
+            </Auth>
           </Switch>
           <Footer />
         </LayoutBox>

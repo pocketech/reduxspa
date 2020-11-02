@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { signIn } from '../../store/userSlice';
+import Typography from '@material-ui/core/Typography';
+
 
 const Component = ({
   email,
@@ -16,7 +18,8 @@ const Component = ({
 }) => (
     <div className={className}>
       <div className='c-section-container'>
-        <h2 className='u-text-center u-text__headline'>ログイン</h2>
+        <div className='module-spacer--medium' />
+        <Typography className="login-fontprop" align="center" variant="h4" component="h2">Log In !</Typography>
         <div className='module-spacer--medium' />
         <TextInput
           fullWidth={true}
@@ -47,6 +50,8 @@ const Component = ({
             }
           />
           <div className='module-spacer--small' />
+          <p>パスワードを忘れた方は<span onClick={() => history.push('/login/reset')}>こちら</span></p>
+          <p><span onClick={() => history.push('/signup')}>アカウント登録</span>がまだですか？</p>
         </div>
       </div>
     </div>
@@ -60,16 +65,12 @@ const StyledComponent = styled(Component)`
     height: auto;
     width: calc(100% - 2rem);
 
-    & .u-text-center {
-      text-align: center;
-    }
-    & .u-text-headline {
-      color: #4dd0e1;
-      font-size: 1.563rem;
-      margin: 0 auto 1rem auto;
+    & .login-fontprop {
+      font-family: 'Grandstander', cursive;
+      letter-spacing: 3px;
     }
     & .module-spacer--medium {
-      height: 32px;
+      height: 20px;
     }
     & .center {
       margin: 0 auto;
@@ -79,6 +80,10 @@ const StyledComponent = styled(Component)`
     }
     &>p {
       font-size: .9rem;
+      & span {
+        cursor:pointer;
+        color:#227C9D;
+      }
   }
     }
   }

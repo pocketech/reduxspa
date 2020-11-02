@@ -6,7 +6,7 @@ const useStyles = makeStyles(theme =>
   ({
     "button": {
       backgroundColor: theme.palette.primary.main,
-      color: '#000',
+      color: '#fff',
       fontSize: 16,
       height: 48,
       marginBottom: 16,

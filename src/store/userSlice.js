@@ -37,6 +37,32 @@ export const getUserId = state => state.user.uid;
 
 export default userSlice.reducer;
 
+export const listenAuthState = (history) => {
+  return async (dispatch) => {
+    return auth.onAuthStateChanged(user => {
+      if (user) {
+        userRef.doc(user.uid).get()
+          .then(snapshot => {
+            const data = snapshot.data()
+            if (!data) {
+              throw new Error('ユーザーデータが存在しません。')
+            }
+
+            // Update logged in user state
+            dispatch(signInAc({
+              email: data.email,
+              isSignedIn: true,
+              uid: user.uid,
+              username: data.username,
+            }))
+          })
+      } else {
+        history.push('/login');
+      }
+    })
+  }
+};
+
 
 export const signUp = (username, email, password, confirmPassword, history) => {
   return async (dispatch) => {
@@ -167,11 +193,5 @@ export const resetPassword = (email, history) => {
           alert('登録されていないメールアドレスです。もう一度ご確認ください。')
         })
     }
-  }
-}
-
-export const listenAuthState = () => {
-  return async dispatch => {
-    return auth.onAuthStateChanged
   }
 }

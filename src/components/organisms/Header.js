@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSignedIn } from '../../store/userSlice';
-import { useHistory } from 'react-router-dom';
+import { getSignedIn, signOut } from '../../store/userSlice';
+import { useHistory, useLocation } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Hidden from '@material-ui/core/Hidden';
@@ -92,7 +92,8 @@ export default function Header(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-  const isLogin = useSelector(getSignedIn);
+  const location = useLocation();
+  const isSignedIn = useSelector(getSignedIn);
   const [mobileOpen, setMobileOpen] = useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -162,9 +163,16 @@ export default function Header(props) {
             Corgy
             <NikikyuIcon classes={{ root: classes.nikukyuIcon }} />
           </Typography>
-          <Button color="inherit" variant="outlined" className={classes.signInButton} onClick={() => { history.push('/login') }}>
-            Login
-          </Button>
+          {isSignedIn ?
+            (<Button color="inherit" variant="outlined" className={classes.signInButton} onClick={() => dispatch(signOut(history))}>
+              Logout
+            </Button>) : location.pathname === '/signup' ?
+              (<Button color="inherit" variant="outlined" className={classes.signInButton} onClick={() => history.push('/login')}>
+                Login
+              </Button>) : (<Button color="inherit" variant="outlined" className={classes.signInButton} onClick={() => history.push('/signup')}>
+                Signup
+              </Button>)
+          }
           <ButtonGroup
             variant="outlined"
             edge="end"
