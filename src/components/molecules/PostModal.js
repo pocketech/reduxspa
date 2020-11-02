@@ -4,15 +4,42 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { TextInput } from "../atoms";
-import RatingBox from "../atoms/RatingBox";
+import { TextInput, RatingBox, SelectBox } from "../atoms";
 
 const PostModal = (props) => {
   const [description, setDescription] = useState("");
-  const [rating, setRating] = useState(0);
-  const [name, setName] = useState("");
+  const [cRating, setContentRating] = useState(2);
+  const [eRating, setEvaluateRating] = useState(3);
+  const [lecture, setLecture] = useState("");
+  const [teacher, setTeacher] = useState("");
+  const [faculty, setFaculty] = useState("");
+  const [semester, setSemester] = useState("");
 
-  // Functions triggered by inputting text value
+  const faculties = [
+    { id: "PSE", name: "政治経済学部", alias: "政経", color: "#E56A02" },
+    { id: "LAW", name: "法学部", alias: "法", color: "#55957A" },
+    { id: "CMS", name: "文化構想学部", alias: "文構", color: "#006A68" },
+    { id: "HSS", name: "文学部", alias: "文", color: "#004998" },
+    { id: "EDU", name: "教育学部", alias: "教育", color: "#B75296" },
+    { id: "SOC", name: "商学部", alias: "商", color: "#011A5C" },
+    { id: "FSE", name: "基幹理工学部", alias: "基幹", color: "#D89101" },
+    { id: "CSE", name: "創造理工学部", alias: "創造", color: "#AAB968" },
+    { id: "ASE", name: "先進理工学部", alias: "先進", color: "#01519A" },
+    { id: "SSS", name: "社会科学部", alias: "社学", color: "#F49D00" },
+    { id: "HUM", name: "人間科学部", alias: "人科", color: "#009ACC" },
+    { id: "SPS", name: "スポーツ科学部", alias: "スポ科", color: "#017BC4" },
+    { id: "SILS", name: "国際教養学部", alias: "国教", color: "#00A2A4" },
+  ];
+
+  const semesters = [
+    { id: "spring", name: "春学期" },
+    { id: "autum", name: "秋学期" },
+    { id: "summer", name: "夏季集中" },
+    { id: "winter", name: "春季集中" },
+    { id: "laboratory", name: "研究室,卒研ゼミ" }
+  ];
+
+
   const inputDescription = useCallback(
     (event) => {
       setDescription(event.target.value);
@@ -20,18 +47,26 @@ const PostModal = (props) => {
     [setDescription]
   );
 
-  const inputRating = useCallback(
-    (event) => {
-      setRating(event.target.value);
-    },
-    [setRating]
-  );
+  const inputContentRating =
+    (event, newValue) => {
+      setContentRating(newValue);
+    };
+  const inputEvaluateRating =
+    (event, newValue) => {
+      setEvaluateRating(newValue);
+    };
 
-  const inputName = useCallback(
+  const inputLecture = useCallback(
     (event) => {
-      setName(event.target.value);
+      setLecture(event.target.value);
     },
-    [setName]
+    [setLecture]
+  );
+  const inputTeacher = useCallback(
+    (event) => {
+      setTeacher(event.target.value);
+    },
+    [setTeacher]
   );
 
   const validateRequiredInput = (...args) => {
@@ -45,7 +80,7 @@ const PostModal = (props) => {
   };
 
   const submitForm = () => {
-    const isBlank = validateRequiredInput(name, rating, description);
+    const isBlank = validateRequiredInput(teacher, eRating, cRating, lecture, description);
 
     if (isBlank) {
       alert("必須入力欄が空白です。");
@@ -63,12 +98,22 @@ const PostModal = (props) => {
           label={"講義名"}
           multiline={false}
           rows={1}
-          value={name}
+          value={lecture}
           type={"text"}
-          onChange={inputName}
+          onChange={inputLecture}
         />
-        <RatingBox item="単位" inputRating={inputRating} value={rating} />
-        <RatingBox item="内容" inputRating={inputRating} value={rating} />
+        <TextInput
+          label={"講師名"}
+          multiline={false}
+          rows={1}
+          value={teacher}
+          type={"text"}
+          onChange={inputTeacher}
+        />
+        <RatingBox item={"単位"} handleChange={inputEvaluateRating} value={eRating} />
+        <RatingBox item={"内容"} handleChange={inputContentRating} value={cRating} />
+        <SelectBox label="学部" required={true} value={faculty} select={setFaculty} options={faculties} />
+        <SelectBox label="学期" required={true} value={semester} select={setSemester} options={semesters} />
         <TextInput
           label={"講義を受けての感想を赤裸々に！"}
           multiline={true}

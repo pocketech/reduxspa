@@ -13,6 +13,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Rating from "@material-ui/lab/Rating";
+import RatingBox from "./RatingBox";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,16 +59,8 @@ export default function RecipeReviewCard() {
         "
       />
       <CardContent>
-        <div className={classes.ratingbox}>
-          <Box>
-            <Typography>単位</Typography>
-            <Rating name="read-only" value="2" readOnly />
-          </Box>
-          <Box>
-            <Typography>内容</Typography>
-            <Rating name="read-only" value="2" readOnly />
-          </Box>
-        </div>
+        <RatingBox readOnly item="単位" value="2" />
+        <RatingBox readOnly item="内容" value="4" />
         <Typography variant="body2" color="textSecondary" component="p">
           出席が厳しく、５分でも遅れると欠席扱いとなる。講師が現役の医師であるため、医療に興味がある人にとっては面白いのかもしれない。
         </Typography>

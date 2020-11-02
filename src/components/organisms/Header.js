@@ -17,12 +17,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import MenuIcon from '@material-ui/icons/Menu';
-import HelpIcon from '@material-ui/icons/Help';
 import ContactIcon from '@material-ui/icons/Hearing';
 import HomeIcon from '@material-ui/icons/Home';
 import SettingIcon from '@material-ui/icons/Settings';
 import LogoutIcon from '@material-ui/icons/PermIdentity';
-import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import NikikyuIcon from '@material-ui/icons/Pets';
 
@@ -135,7 +133,7 @@ export default function Header(props) {
       </List>
       <Divider />
       <List>
-        <ListItem button onClick={() => history.push('/login')}>
+        <ListItem button onClick={() => dispatch(signOut(history))}>
           <ListItemIcon>
             <LogoutIcon />
           </ListItemIcon>
@@ -185,6 +183,8 @@ export default function Header(props) {
             <Button onClick={() => history.push('/user/mypage')}>MyPage</Button>
             <Button onClick={() => history.push('/about')}>About</Button>
           </ButtonGroup>
+
+          {isSignedIn ? (<Button style={{ marginLeft: "10px" }} variant="contained" color="secondary" className={classes.navButton} onClick={() => dispatch(signOut(history))} >Logout</Button>) : null}
         </Toolbar>
       </AppBar>
       <div className={classes.offset} />
