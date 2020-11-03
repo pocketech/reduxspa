@@ -9,6 +9,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { TextInput, RatingBox, SelectBox } from "../atoms";
 import { postReview } from '../../store/postSlice'
 
+
 const PostModal = ({ open, handleOpen }) => {
   const [description, setDescription] = useState("");
   const [cRating, setContentRating] = useState(0);
