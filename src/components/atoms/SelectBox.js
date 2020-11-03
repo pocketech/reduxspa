@@ -35,27 +35,5 @@ const SelectBox = (props) => {
     </FormControl>
   );
 };
-// const SelectBox = ({ label, required, select, options, value }) => {
-//   return (
-//     <FormControl>
-//       <InputLabel>{label}</InputLabel>
-//       <Select
-//         value={value}
-//         required={required}
-//         onChange={event => select(event.target.value)}
-//       >
-//         {options.map((option) => {
-//           return
-//           <MenuItem
-//             key={option.id}
-//             value={option.id}
-//           >
-//             {option.name}
-//           </MenuItem>
-//         })}
-//       </Select>
-//     </FormControl>
-//   )
-// };
 
 export default SelectBox;

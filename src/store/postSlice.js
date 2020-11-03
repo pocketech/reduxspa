@@ -1,43 +1,55 @@
-// import { createSlice } from '@reduxjs/toolkit';
-// import {FirebaseTimestamp} from '../firebase'
+import { showLoading, hideLoading } from './loadingSlice'
+import { createSlice } from '@reduxjs/toolkit';
+import { FirebaseTimestamp, db } from '../firebase'
 
-// export const postSlice = createSlice({
-//   name: 'post',
-//   initialState: {
-//     faculty: "",
-//     content: "",
-//     creditEvaluation: 0,
-//     contentEvaluation: 0,
+const postsRef = db.collection('posts');
+export const postSlice = createSlice({
+  name: 'post',
+  initialState: {
+    lecture: "",
+    teacher: "",
+    description: "",
+    cRating: "",
+    eRating: "",
+    facultyObj: {},
+    semesterObj: {},
+    authorID: "",
+  },
+  reducers: {
+    refMyPost: (state, action) => {
+      return {
+        ...state, ...action.payload
+      }
+    }
+  }
+})
 
-//   },
-//   reducers: {
-//     showLoading: (state, action) => {
-//       state.isLoading = true;
-//       state.text = action.payload;
-//     },s
-//     hideLoading: state => {
-//       state.isLoading = false;
-//       state.text = "";
-//     }
-//   }
-// })
 
-// export const { showLoading, hideLoading } = loadingSlice.actions;
-// export const getLoadingState = state => state.loading.isLoading;
-// export const getLoadingText = state => state.loading.text;
-
-// export const savePost = (lecture,teacher,description,rating,faculty,semester)=>{
-//   return async (dispatch) =>{
-//     const timestamp = FirebaseTimestamp.now()
-//     const data = {
-//       lecture,
-//       teacher,
-//       description,
-//       cRating,
-//       eRating,
-//       faculty,
-//       semester
-//     }
-//   }
-// }
-// export default loadingSlice.reducer;
+export const postReview = (facultyObj, semesterObj, teacher, lecture, cRating, eRating, description, authorID, handleOpen, allFieldReset) => {
+  return async (dispatch) => {
+    const timestamp = FirebaseTimestamp.now();
+    const data = {
+      lecture,
+      teacher,
+      description,
+      cRating: Number(cRating),
+      eRating: Number(eRating),
+      facultyObj,
+      semesterObj,
+      authorID,
+      updated_at: timestamp
+    }
+    const ref = postsRef.doc()
+    const id = ref.id;
+    data.id = id;
+    data.created_at = timestamp;
+    return postsRef.doc(id).set(data, { marge: true })
+      .then(() => {
+        dispatch(showLoading('Now Posting...'))
+        alert("投稿が完了しました !");
+        dispatch(hideLoading());
+      })
+      .catch(error => { throw new Error(error) })
+  }
+}
+export default postSlice.reducer;

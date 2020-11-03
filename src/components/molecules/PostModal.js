@@ -1,19 +1,24 @@
 import React, { useState, useCallback } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserId } from '../../store/userSlice';
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { TextInput, RatingBox, SelectBox } from "../atoms";
+import { postReview } from '../../store/postSlice'
 
-const PostModal = (props) => {
+const PostModal = ({ open, handleOpen }) => {
   const [description, setDescription] = useState("");
-  const [cRating, setContentRating] = useState(2);
-  const [eRating, setEvaluateRating] = useState(3);
+  const [cRating, setContentRating] = useState(0);
+  const [eRating, setEvaluateRating] = useState(0);
   const [lecture, setLecture] = useState("");
   const [teacher, setTeacher] = useState("");
   const [faculty, setFaculty] = useState("");
   const [semester, setSemester] = useState("");
+  const dispatch = useDispatch();
+  const authorID = useSelector(getUserId);
 
   const faculties = [
     { id: "PSE", name: "政治経済学部", alias: "政経", color: "#E56A02" },
@@ -38,6 +43,22 @@ const PostModal = (props) => {
     { id: "winter", name: "春季集中" },
     { id: "laboratory", name: "研究室,卒研ゼミ" }
   ];
+
+  const facultyToObj = item => item.id === faculty;
+  const facultyObj = faculties.find(facultyToObj);
+  const semesterToObj = item => item.id === semester;
+  const semesterObj = semesters.find(semesterToObj);
+  console.log(facultyObj, semesterObj)
+
+  const allFieldReset = () => {
+    setLecture("");
+    setTeacher("");
+    setFaculty("");
+    setSemester("");
+    setDescription("");
+    setEvaluateRating(0);
+    setContentRating(0);
+  }
 
 
   const inputDescription = useCallback(
@@ -69,29 +90,13 @@ const PostModal = (props) => {
     [setTeacher]
   );
 
-  const validateRequiredInput = (...args) => {
-    let isBlank = false;
-    for (let i = 0; i < args.length; i = (i + 1) | 0) {
-      if (args[i] === "") {
-        isBlank = true;
-      }
-    }
-    return isBlank;
-  };
-
-  const submitForm = () => {
-    const isBlank = validateRequiredInput(teacher, eRating, cRating, lecture, description);
-
-    if (isBlank) {
-      alert("必須入力欄が空白です。");
-      return false;
-    } else {
-      alert("success");
-    }
-  };
-
+  const submit = async () => {
+    await dispatch(postReview(facultyObj, semesterObj, teacher, lecture, cRating, eRating, description, authorID));
+    allFieldReset();
+    handleOpen()
+  }
   return (
-    <Dialog open={props.open} onClose={props.handleOpen} fullWidth>
+    <Dialog open={open} onClose={handleOpen} fullWidth>
       <DialogTitle>講義情報を投稿しよう！</DialogTitle>
       <DialogContent>
         <TextInput
@@ -110,10 +115,10 @@ const PostModal = (props) => {
           type={"text"}
           onChange={inputTeacher}
         />
-        <RatingBox item={"単位"} handleChange={inputEvaluateRating} value={eRating} />
-        <RatingBox item={"内容"} handleChange={inputContentRating} value={cRating} />
         <SelectBox label="学部" required={true} value={faculty} select={setFaculty} options={faculties} />
         <SelectBox label="学期" required={true} value={semester} select={setSemester} options={semesters} />
+        <RatingBox item={"単位"} handleChange={inputEvaluateRating} value={eRating} />
+        <RatingBox item={"内容"} handleChange={inputContentRating} value={cRating} />
         <TextInput
           label={"講義を受けての感想を赤裸々に！"}
           multiline={true}
@@ -124,10 +129,10 @@ const PostModal = (props) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleOpen} color="primary">
+        <Button onClick={handleOpen} color="primary">
           キャンセル
         </Button>
-        <Button onClick={submitForm} color="primary">
+        <Button onClick={submit} color="primary">
           投稿する
         </Button>
       </DialogActions>
