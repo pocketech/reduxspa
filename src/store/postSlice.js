@@ -6,26 +6,39 @@ const postsRef = db.collection('posts');
 export const postSlice = createSlice({
   name: 'post',
   initialState: {
-    lecture: "",
-    teacher: "",
-    description: "",
-    cRating: "",
-    eRating: "",
-    facultyObj: {},
-    semesterObj: {},
-    authorID: "",
+    list: []
   },
   reducers: {
-    refMyPost: (state, action) => {
+    fetchPostsAc: (state, action) => {
       return {
-        ...state, ...action.payload
+        ...state, list: action.payload
       }
     }
   }
 })
 
+export const fetchPosts = (fID, sID) => {
+  return async (dispatch) => {
+    let query = postsRef.orderBy('updated_at', 'desc');
+    query = (fID !== "") ? query.where('fID', '==', fID) : query;
+    query = (sID !== "") ? query.where('sID', '==', sID) : query;
 
-export const postReview = (facultyObj, semesterObj, teacher, lecture, cRating, eRating, description, authorID, handleOpen, allFieldReset) => {
+    query.get()
+      .then(snapshots => {
+        const postList = []
+        snapshots.forEach(snapshot => {
+          const post = snapshot.data()
+          postList.push(post)
+        })
+        dispatch(fetchPostsAc(postList))
+      })
+  }
+}
+export const { fetchPostsAc } = postSlice.actions;
+export const getReview = state => state.post.list;
+
+
+export const postReview = (facultyObj, semesterObj, teacher, lecture, cRating, eRating, description, authorID, semester, faculty) => {
   return async (dispatch) => {
     const timestamp = FirebaseTimestamp.now();
     const data = {
@@ -36,6 +49,8 @@ export const postReview = (facultyObj, semesterObj, teacher, lecture, cRating, e
       eRating: Number(eRating),
       facultyObj,
       semesterObj,
+      fID: faculty,
+      sID: semester,
       authorID,
       updated_at: timestamp
     }

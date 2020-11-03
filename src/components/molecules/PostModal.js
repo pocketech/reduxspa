@@ -92,7 +92,7 @@ const PostModal = ({ open, handleOpen }) => {
   );
 
   const submit = async () => {
-    await dispatch(postReview(facultyObj, semesterObj, teacher, lecture, cRating, eRating, description, authorID));
+    await dispatch(postReview(facultyObj, semesterObj, teacher, lecture, cRating, eRating, description, authorID, semester, faculty));
     allFieldReset();
     handleOpen()
   }
