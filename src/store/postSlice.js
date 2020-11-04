@@ -2,7 +2,9 @@ import { showLoading, hideLoading } from './loadingSlice'
 import { createSlice } from '@reduxjs/toolkit';
 import { FirebaseTimestamp, db } from '../firebase'
 
+//postsコレクションへのReference
 const postsRef = db.collection('posts');
+
 export const postSlice = createSlice({
   name: 'post',
   initialState: {
@@ -19,22 +21,33 @@ export const postSlice = createSlice({
 
 export const fetchPosts = (fID, sID) => {
   return async (dispatch) => {
+
+    //postsコレクションを更新日付の新しい順で並び変えて、検索条件を満たすものに絞り込み
     let query = postsRef.orderBy('updated_at', 'desc');
     query = (fID !== "") ? query.where('fID', '==', fID) : query;
     query = (sID !== "") ? query.where('sID', '==', sID) : query;
 
+    //講義情報のドキュメントをpostList配列にpushしてstoreのstateを更新する
     query.get()
       .then(snapshots => {
         const postList = []
         snapshots.forEach(snapshot => {
-          const post = snapshot.data()
-          postList.push(post)
+          const post = snapshot.data();
+          console.log(post.updated_at);
+          console.log(post.created_at);
+          post.updated_at.toDate();
+          post.created_at.toDate();
+          console.log(post.updated_at);
+          console.log(post.created_at);
+          postList.push(post);
         })
         dispatch(fetchPostsAc(postList))
       })
   }
 }
 export const { fetchPostsAc } = postSlice.actions;
+
+//storeに格納した配列を取り出す関数
 export const getReview = state => state.post.list;
 
 
