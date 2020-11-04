@@ -99,7 +99,7 @@ export default function Header(props) {
   const theme = useTheme();
   const container = window !== undefined ? () => window().document.body : undefined;
   const drawer = (
-    <div>
+    <div onClick={() => handleDrawerToggle()}>
       <div className={classes.toolbar} />
       <Divider />
       <List>
