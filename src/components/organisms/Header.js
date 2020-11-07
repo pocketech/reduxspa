@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSignedIn, signOut } from '../../store/userSlice';
@@ -93,9 +93,9 @@ export default function Header(props) {
   const location = useLocation();
   const isSignedIn = useSelector(getSignedIn);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const handleDrawerToggle = () => {
+  const handleDrawerToggle = useCallback(() => {
     setMobileOpen(!mobileOpen);
-  };
+  }, [setMobileOpen, mobileOpen]);
   const theme = useTheme();
   const container = window !== undefined ? () => window().document.body : undefined;
   const drawer = (
@@ -109,6 +109,7 @@ export default function Header(props) {
           </ListItemIcon>
           <ListItemText primary={"Home"} />
         </ListItem>
+
         <ListItem button onClick={() => history.push('/user/mypage')}>
           <ListItemIcon>
             <AccountCircleIcon />
@@ -161,15 +162,36 @@ export default function Header(props) {
             Corgy
             <NikikyuIcon classes={{ root: classes.nikukyuIcon }} />
           </Typography>
-          {isSignedIn ?
-            (<Button color="inherit" variant="outlined" className={classes.signInButton} onClick={() => dispatch(signOut(history))}>
+          {isSignedIn ? (
+            <Button
+              color="inherit"
+              variant="outlined"
+              className={classes.signInButton}
+              onClick={() => dispatch(signOut(history))}
+            >
               Logout
-            </Button>) : location.pathname === '/signup' ?
-              (<Button color="inherit" variant="outlined" className={classes.signInButton} onClick={() => history.push('/login')}>
+            </Button>
+          )
+            : location.pathname === '/signup' ? (
+              <Button
+                color="inherit"
+                variant="outlined"
+                className={classes.signInButton}
+                onClick={() => history.push('/login')}
+              >
                 Login
-              </Button>) : (<Button color="inherit" variant="outlined" className={classes.signInButton} onClick={() => history.push('/signup')}>
-                Signup
-              </Button>)
+              </Button>
+            )
+              : (
+                <Button
+                  color="inherit"
+                  variant="outlined"
+                  className={classes.signInButton}
+                  onClick={() => history.push('/signup')}
+                >
+                  Signup
+                </Button>
+              )
           }
           <ButtonGroup
             variant="outlined"
@@ -184,9 +206,22 @@ export default function Header(props) {
             <Button onClick={() => history.push('/about')}>About</Button>
           </ButtonGroup>
 
-          {isSignedIn ? (<Button style={{ marginLeft: "10px" }} variant="contained" color="secondary" className={classes.navButton} onClick={() => dispatch(signOut(history))} >Logout</Button>) : null}
+          {/* 
+        */}
+          {isSignedIn ? (
+            <Button
+              style={{ marginLeft: "10px" }}
+              variant="contained"
+              color="secondary"
+              className={classes.navButton}
+              onClick={() => dispatch(signOut(history))}
+            >
+              Logout
+            </Button>
+          ) : null}
         </Toolbar>
       </AppBar>
+
       <div className={classes.offset} />
       <nav className={classes.drawer} aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}

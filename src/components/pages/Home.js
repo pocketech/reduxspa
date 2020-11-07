@@ -19,23 +19,26 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Component = (props) => (
+const Component = ({ isModalOpen, handleOpen, classes }) =>
   <>
     <Spacer my={4} />
     <Search />
     <Spacer my={4} />
     <CardList />
-    <PostModal open={props.isModalOpen} handleOpen={props.handleOpen} />
+    <PostModal
+      open={isModalOpen}
+      handleOpen={handleOpen}
+    />
     <Fab
       color="secondary"
       aria-label="edit"
-      className={props.classes.fab}
-      onClick={() => props.handleOpen()}
+      className={classes.fab}
+      onClick={handleOpen}
     >
       <EditIcon />
     </Fab>
   </>
-);
+  ;
 const Container = (props) => {
   const classes = useStyles();
   const [isModalOpen, setModalOpen] = useState(false);

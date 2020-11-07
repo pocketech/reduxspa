@@ -18,6 +18,7 @@ const PostModal = ({ open, handleOpen }) => {
   const [teacher, setTeacher] = useState("");
   const [faculty, setFaculty] = useState("");
   const [semester, setSemester] = useState("");
+
   const dispatch = useDispatch();
   const authorID = useSelector(getUserId);
 
@@ -45,11 +46,8 @@ const PostModal = ({ open, handleOpen }) => {
     { id: "laboratory", name: "研究室,卒研ゼミ" }
   ];
 
-  const facultyToObj = item => item.id === faculty;
-  const facultyObj = faculties.find(facultyToObj);
-  const semesterToObj = item => item.id === semester;
-  const semesterObj = semesters.find(semesterToObj);
-  console.log(facultyObj, semesterObj)
+  const facultyObj = faculties.find(item => item.id === faculty);
+  const semesterObj = semesters.find(item => item.id === semester);
 
   const allFieldReset = () => {
     setLecture("");
@@ -63,29 +61,35 @@ const PostModal = ({ open, handleOpen }) => {
 
 
   const inputDescription = useCallback(
-    (event) => {
+    event => {
       setDescription(event.target.value);
     },
     [setDescription]
   );
 
-  const inputContentRating =
+  const inputContentRating = useCallback(
     (event, newValue) => {
       setContentRating(newValue);
-    };
-  const inputEvaluateRating =
+    },
+    [setContentRating]
+  );
+
+  const inputEvaluateRating = useCallback(
     (event, newValue) => {
       setEvaluateRating(newValue);
-    };
+    },
+    [setEvaluateRating]
+  );
 
   const inputLecture = useCallback(
-    (event) => {
+    event => {
       setLecture(event.target.value);
     },
     [setLecture]
   );
+
   const inputTeacher = useCallback(
-    (event) => {
+    event => {
       setTeacher(event.target.value);
     },
     [setTeacher]
@@ -94,7 +98,7 @@ const PostModal = ({ open, handleOpen }) => {
   const submit = async () => {
     await dispatch(postReview(facultyObj, semesterObj, teacher, lecture, cRating, eRating, description, authorID, semester, faculty));
     allFieldReset();
-    handleOpen()
+    handleOpen();
   }
   return (
     <Dialog open={open} onClose={handleOpen} fullWidth>
@@ -116,10 +120,30 @@ const PostModal = ({ open, handleOpen }) => {
           type={"text"}
           onChange={inputTeacher}
         />
-        <SelectBox label="学部" required={true} value={faculty} select={setFaculty} options={faculties} />
-        <SelectBox label="学期" required={true} value={semester} select={setSemester} options={semesters} />
-        <RatingBox item={"単位"} handleChange={inputEvaluateRating} value={eRating} />
-        <RatingBox item={"内容"} handleChange={inputContentRating} value={cRating} />
+        <SelectBox
+          label="学部"
+          required={true}
+          value={faculty}
+          select={setFaculty}
+          options={faculties}
+        />
+        <SelectBox
+          label="学期"
+          required={true}
+          value={semester}
+          select={setSemester}
+          options={semesters}
+        />
+        <RatingBox
+          item={"単位"}
+          handleChange={inputEvaluateRating}
+          value={eRating}
+        />
+        <RatingBox
+          item={"内容"}
+          handleChange={inputContentRating}
+          value={cRating}
+        />
         <TextInput
           label={"講義を受けての感想を赤裸々に！"}
           multiline={true}

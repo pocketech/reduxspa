@@ -7,7 +7,7 @@ import LoyaltyIcon from '@material-ui/icons/Loyalty';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { useHistory } from 'react-router-dom';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   wrapper: {
     display: 'block',
     width: '100%',

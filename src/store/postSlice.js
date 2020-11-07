@@ -33,18 +33,13 @@ export const fetchPosts = (fID, sID) => {
         const postList = []
         snapshots.forEach(snapshot => {
           const post = snapshot.data();
-          console.log(post.updated_at);
-          console.log(post.created_at);
-          post.updated_at.toDate();
-          post.created_at.toDate();
-          console.log(post.updated_at);
-          console.log(post.created_at);
           postList.push(post);
         })
         dispatch(fetchPostsAc(postList))
       })
   }
 }
+
 export const { fetchPostsAc } = postSlice.actions;
 
 //storeに格納した配列を取り出す関数

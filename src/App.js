@@ -9,34 +9,31 @@ import { Header, Footer } from './components/organisms';
 import Loading from './Loading'
 import Auth from './Auth';
 
-function App() {
-  return (
-    <Router>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <LayoutBox height="100vh">
-          <Header />
-          <Loading>
-            <Switch>
-              <Route exact path='/login' component={SignIn} />
-              <Route exact path='/login/reset' component={Reset} />
-              <Route exact path='/signup' component={SignUp} />
-              <Auth>
-                <Route exact path='(/)?' component={Home} />
-                <Route exact path='/about' component={About} />
-                <Route exact path='/user/mypage' component={MyPage} />
-                {/* <Route exact path='/user/favorite' component={Favorites} /> */}
-                {/* <Route exact path='/user/coupon' component={Coupon} /> */}
-              </Auth>
-            </Switch>
-          </Loading>
-          <Footer />
-        </LayoutBox>
-      </ThemeProvider>
-    </Router>
+const App = () =>
+  <Router>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <LayoutBox height="100vh">
+        <Header />
+        <Loading>
+          <Switch>
+            <Route exact path='/login' component={SignIn} />
+            <Route exact path='/login/reset' component={Reset} />
+            <Route exact path='/signup' component={SignUp} />
+            <Auth>
+              <Route exact path='(/)?' component={Home} />
+              <Route exact path='/about' component={About} />
+              <Route exact path='/user/mypage' component={MyPage} />
+              {/* <Route exact path='/user/favorite' component={Favorites} /> */}
+              {/* <Route exact path='/user/coupon' component={Coupon} /> */}
+            </Auth>
+          </Switch>
+        </Loading>
+        <Footer />
+      </LayoutBox>
+    </ThemeProvider>
+  </Router>
+  ;
 
-
-  );
-}
 
 export default App;

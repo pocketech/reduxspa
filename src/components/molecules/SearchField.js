@@ -44,12 +44,13 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 20
     }
   }
-
 }));
 
 export default function SearchField() {
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
+
 
   const faculties = [
     { id: "PSE", name: "政治経済学部", alias: "政経", color: "#E56A02" },
@@ -78,25 +79,25 @@ export default function SearchField() {
   //検索フィールドの初期値
   const [faculty, setFaculty] = useState(`${faculties[0].name}`);
   const [semester, setSemester] = useState(`${semesters[0].name}`);
-  const dispatch = useDispatch();
+
+  //コールバック関数
   const handleFacultyChange = (event) => setFaculty(event.target.value);
   const handleSemesterChange = (event) => setSemester(event.target.value);
 
   //現在のfaculty(semester)と同じ値のnameプロパティを持つオブジェクトをfaculties(semesters)配列から抽出し、そのオブジェクトからidプロパティを抽出
-  const facultyToObj = item => item.name === faculty;
-  const facultyObj = faculties.find(facultyToObj);
+  const facultyObj = faculties.find(item => item.name === faculty);
   const fID = facultyObj.id;
-  const semesterToObj = item => item.name === semester;
-  const semesterObj = semesters.find(semesterToObj);
+  const semesterObj = semesters.find(item => item.name === semester);
   const sID = semesterObj.id;
-  console.log(facultyObj, semesterObj);
 
   let params = new URLSearchParams(window.location.search.substring(1));
   let facultyParam = params.get("faculty");
   let semesterParam = params.get("semester");
 
-
-  useEffect(() => { dispatch(fetchPosts(facultyParam, semesterParam)) }, [dispatch, facultyParam, semesterParam])
+  useEffect(() =>
+    dispatch(fetchPosts(facultyParam, semesterParam)),
+    [dispatch, facultyParam, semesterParam]
+  );
 
 
   return (
@@ -124,9 +125,7 @@ export default function SearchField() {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={semester}
-            onChange={(event) => {
-              handleSemesterChange(event);
-            }}
+            onChange={event => handleSemesterChange(event)}
           >
             {semesters.map((item) => (
               <MenuItem key={item.id} value={item.name}>
@@ -137,7 +136,12 @@ export default function SearchField() {
         </FormControl>
       </div>
       <div className={classes.search}>
-        <Button variant="contained" color="primary" endIcon={<Search />} onClick={() => { history.push(`/?faculty=${fID}&semester=${sID}`) }}>
+        <Button
+          variant="contained"
+          color="primary"
+          endIcon={<Search />}
+          onClick={() => history.push(`/?faculty=${fID}&semester=${sID}`)}
+        >
           <Typography variant="h6">
             <span style={{ textDecoration: "none" }}>{faculty}</span>の<span style={{ textDecoration: "none" }}>{semester}</span>の講義を検索する
           </Typography>

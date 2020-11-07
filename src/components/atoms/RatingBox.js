@@ -3,7 +3,7 @@ import Typography from "@material-ui/core/Typography";
 import Rating from "@material-ui/lab/Rating";
 import Spacer from "@material-ui/core/Box";
 
-const RatingBox = ({ item, value, handleChange, ...other }) => (
+const RatingBox = React.memo(({ item, value, handleChange, ...other }) =>
   <>
     <Spacer my={2} />
     <div style={{ display: "flex", justifyContent: "flex-start" }}>

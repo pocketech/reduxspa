@@ -4,9 +4,8 @@ import { useSelector } from "react-redux";
 import { getLoadingState, getLoadingText } from "./store/loadingSlice";
 
 const Loading = ({ children }) => {
-  const selector = useSelector((state) => state);
-  const isBeingLoaded = getLoadingState(selector);
-  const loadingText = getLoadingText(selector)
+  const isBeingLoaded = useSelector(getLoadingState);
+  const loadingText = useSelector(getLoadingText);
 
   return (
     <>
