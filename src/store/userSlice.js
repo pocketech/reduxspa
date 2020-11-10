@@ -3,12 +3,14 @@ import { showLoading, hideLoading } from './loadingSlice'
 import { db, auth, FirebaseTimestamp } from '../firebase';
 import { isValidEmailFormat, isValidRequiredInput } from "../utility/common";
 
+//usersコレクションへのリファレンス
 const userRef = db.collection('users');
 const initialState = {
   uid: "",
   username: "",
   email: "",
-  isSignedIn: false
+  isSignedIn: false,
+  isGuest: false,
 }
 
 export const userSlice = createSlice({
@@ -29,15 +31,14 @@ export const userSlice = createSlice({
   },
 });
 
-export const { signOutAc, signInAc, updateAc } = userSlice.actions;
+export const { signInAc, signOutAc, updateAc } = userSlice.actions;
 export const getSignedIn = state => state.user.isSignedIn;
 export const getUserName = state => state.user.username;
 export const getUserId = state => state.user.uid;
 
-
 export default userSlice.reducer;
 
-export const listenAuthState = (history) => {
+export const listenAuthState = history => {
   return async (dispatch) => {
     return auth.onAuthStateChanged(user => {
       if (user) {
@@ -47,8 +48,6 @@ export const listenAuthState = (history) => {
             if (!data) {
               throw new Error('ユーザーデータが存在しません。')
             }
-
-            // Update logged in user state
             dispatch(signInAc({
               email: data.email,
               isSignedIn: true,
@@ -97,7 +96,6 @@ export const signUp = (username, email, password, confirmPassword, history) => {
             email: email,
             uid: uid,
             updated_at: timestamp,
-
             username: username
           };
           userRef.doc(uid).set(userInitialData).then(async () => {
@@ -109,6 +107,29 @@ export const signUp = (username, email, password, confirmPassword, history) => {
       .catch(error => {
         dispatch(hideLoading());
         alert('アカウント登録に失敗しました。もう1度お試しください。');
+        throw new Error(error);
+      })
+  }
+}
+
+export const signInAsGuest = (history) => {
+  return async (dispatch) => {
+    dispatch(showLoading('Sign in...'));
+    return await auth.signInAnonymously()
+      .then(result => {
+        const user = result.user;
+        const userId = user.uid;
+        dispatch(signInAc({
+          isSignedIn: true,
+          uid: userId,
+          isGuest: true,
+        }));
+        history.push('/');
+        dispatch(hideLoading());
+      })
+      .catch(error => {
+        dispatch(hideLoading());
+        alert('ログイン出来ませんでした。もう1度お試しください。');
         throw new Error(error);
       })
   }
@@ -133,12 +154,12 @@ export const signIn = (email, password, history) => {
 
     return await auth.signInWithEmailAndPassword(email, password)
       .then(result => {
-        const userState = result.user;
-        if (!userState) {
+        const user = result.user;
+        if (!user) {
           dispatch(hideLoading());
           throw new Error('ユーザーIDを取得出来ませんでした。')
         }
-        const userId = userState.uid;
+        const userId = user.uid;
         //Promiseを返す
         return userRef.doc(userId).get().then(snapshot => {
           const data = snapshot.data();

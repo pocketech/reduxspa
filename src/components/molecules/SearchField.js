@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function SearchField() {
+const SearchField = () => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -90,10 +90,17 @@ export default function SearchField() {
   const semesterObj = semesters.find(item => item.name === semester);
   const sID = semesterObj.id;
 
+  //クエリパラメータを取得
   let params = new URLSearchParams(window.location.search.substring(1));
   let facultyParam = params.get("faculty");
   let semesterParam = params.get("semester");
 
+  //初回のみ実行
+  // useEffect(() =>
+  //   dispatch(fetchPosts("PSE", "spring")),
+  //   [dispatch]);
+
+  //クエリパラメータが変わる度に(検索ボタンを押すたびに)実行
   useEffect(() =>
     dispatch(fetchPosts(facultyParam, semesterParam)),
     [dispatch, facultyParam, semesterParam]
@@ -151,3 +158,5 @@ export default function SearchField() {
 
   );
 }
+
+export default SearchField;

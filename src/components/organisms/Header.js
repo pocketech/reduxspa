@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getSignedIn, signOut } from '../../store/userSlice';
 import { useHistory, useLocation } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import Hidden from '@material-ui/core/Hidden';
-import Drawer from '@material-ui/core/Drawer';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -159,7 +159,7 @@ export default function Header(props) {
             <MenuIcon classes={{ root: classes.menuIcon }} />
           </IconButton>
           <Typography variant="h4" component="h1" className={classes.title} onClick={() => { history.push('/') }}>
-            Corgy
+            Corgi
             <NikikyuIcon classes={{ root: classes.nikukyuIcon }} />
           </Typography>
           {isSignedIn ? (

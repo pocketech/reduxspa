@@ -25,7 +25,7 @@ const SelectBox = React.memo(({ label, value, required, select, options }) => {
       <Select
         value={value}
         required={required}
-        onChange={(e) => select(e.target.value)}
+        onChange={e => select(e.target.value)}
         //セレクトボックスの高さを調節する
         MenuProps={
           { classes: { paper: classes.dropdownStyle } }

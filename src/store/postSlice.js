@@ -45,7 +45,6 @@ export const { fetchPostsAc } = postSlice.actions;
 //storeに格納した配列を取り出す関数
 export const getReview = state => state.post.list;
 
-
 export const postReview = (facultyObj, semesterObj, teacher, lecture, cRating, eRating, description, authorID, semester, faculty) => {
   return async (dispatch) => {
     const timestamp = FirebaseTimestamp.now();

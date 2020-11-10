@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from 'react';
-import { TextInput, PrimaryButton } from '../atoms';
+import { TextInput, PrimaryButton, SecondaryButton } from '../atoms';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { signIn } from '../../store/userSlice';
+import { signIn, signInAsGuest } from '../../store/userSlice';
 import Typography from '@material-ui/core/Typography';
 
 
@@ -48,6 +48,11 @@ const Component = ({
             onClick={() =>
               dispatch(signIn(email, password, history))
             }
+          />
+          <SecondaryButton
+            label={'ログインせずに利用してみる'}
+            onClick={() =>
+              dispatch(signInAsGuest(history))}
           />
           <div className='module-spacer--small' />
           <p>パスワードを忘れた方は<span onClick={() => history.push('/login/reset')}>こちら</span></p>
