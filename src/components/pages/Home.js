@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Search from "../molecules/SearchField";
+import SearchField from "../molecules/SearchField";
 import CardList from "../molecules/CardList";
 import Fab from "@material-ui/core/Fab";
 import EditIcon from "@material-ui/icons/Edit";
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 const Component = ({ isModalOpen, handleOpen, classes }) =>
   <>
     <Spacer my={4} />
-    <Search />
+    <SearchField />
     <Spacer my={4} />
     <CardList />
     <PostModal

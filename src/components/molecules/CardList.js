@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { getReview } from '../../store/postSlice'
 import Grid from "@material-ui/core/Grid";
 import Card from "../atoms/Card";
+import Zoom from "@material-ui/core/Zoom"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,16 +33,18 @@ const CardList = () => {
               md={4}
               key={review.id}
             >
-              <Card
-                cRating={review.cRating}
-                eRating={review.eRating}
-                description={review.description}
-                teacher={review.teacher}
-                lecture={review.lecture}
-                color={review.facultyObj.color}
-                alias={review.facultyObj.alias}
-                semester={review.semesterObj.name}
-              />
+              <Zoom in={true} style={{ transitionDelay: '0ms' }}>
+                <Card
+                  cRating={review.cRating}
+                  eRating={review.eRating}
+                  description={review.description}
+                  teacher={review.teacher}
+                  lecture={review.lecture}
+                  color={review.facultyObj.color}
+                  alias={review.facultyObj.alias}
+                  semester={review.semesterObj.name}
+                />
+              </Zoom>
             </Grid>
           ))
         )}

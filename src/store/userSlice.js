@@ -46,14 +46,22 @@ export const listenAuthState = history => {
           .then(snapshot => {
             const data = snapshot.data()
             if (!data) {
-              throw new Error('ユーザーデータが存在しません。')
+              if (user.isAnonymous)
+                dispatch(signInAc({
+                  isSignedIn: true,
+                  uid: user.uid,
+                  isGuest: true
+                }))
+              else
+                throw new Error('ユーザーデータが存在しません。')
             }
-            dispatch(signInAc({
-              email: data.email,
-              isSignedIn: true,
-              uid: user.uid,
-              username: data.username,
-            }))
+            else
+              dispatch(signInAc({
+                email: data.email,
+                isSignedIn: true,
+                uid: user.uid,
+                username: data.username,
+              }))
           })
       } else {
         history.push('/login');

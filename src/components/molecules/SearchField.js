@@ -95,14 +95,16 @@ const SearchField = () => {
   let facultyParam = params.get("faculty");
   let semesterParam = params.get("semester");
 
-  //初回のみ実行
+  // 初回のみ実行
   // useEffect(() =>
-  //   dispatch(fetchPosts("PSE", "spring")),
+  //   dispatch(fetchPosts(faculties[0].id, semesters[0].id)),
   //   [dispatch]);
 
   //クエリパラメータが変わる度に(検索ボタンを押すたびに)実行
   useEffect(() =>
-    dispatch(fetchPosts(facultyParam, semesterParam)),
+    window.location.search ?
+      dispatch(fetchPosts(facultyParam, semesterParam)) :
+      dispatch(fetchPosts("PSE", "spring")),
     [dispatch, facultyParam, semesterParam]
   );
 
